@@ -6,3 +6,4 @@ dev分支的更改3dev分支的更改4
 修复了bug
 修复了bug2
 修复了bug3
+在dev上修复了bug6
