@@ -13,7 +13,7 @@ def main():
         sheet1.write(0, ii, head)
         ii += 1
 
-    for page in range(1, 2):
+    for page in range(1, 10):
         url = 'http://bangumi.tv/game/browser?sort=rank&page=%d' %page
         res = requests.get(url)
         res.encoding = 'utf-8'    #告诉requests这个网站要用utf-8编码方式
