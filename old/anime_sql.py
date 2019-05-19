@@ -3,6 +3,8 @@ import requests
 from bs4 import BeautifulSoup
 import pymysql
 
+#老式脚本，需要进入一个个网页取数据，没有用api
+
 # 打开数据库连接
 db = pymysql.connect("localhost", "root", "123456", "testdb", charset='utf8')
 

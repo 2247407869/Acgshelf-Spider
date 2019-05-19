@@ -3,6 +3,8 @@ import requests
 from bs4 import BeautifulSoup
 import pymysql
 
+#这个应该是最新在使用的
+
 rank = 0
 
 # 打开数据库连接

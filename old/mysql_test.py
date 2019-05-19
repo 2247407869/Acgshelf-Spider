@@ -3,6 +3,8 @@ import requests
 from bs4 import BeautifulSoup
 import pymysql
 
+#这个应该是早期测试mysql可用性的。。
+
 # 打开数据库连接
 db = pymysql.connect("localhost", "root", "lls0908329", "testdb", charset='utf8')
 

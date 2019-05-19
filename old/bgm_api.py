@@ -3,6 +3,8 @@ import requests
 import pymysql
 import time
 
+#使用了api，妄想爬取所有数据
+
 # 打开数据库连接
 db = pymysql.connect("localhost", "root", "lls0908329", "acgshelf", charset='utf8')
 

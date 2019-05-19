@@ -3,10 +3,12 @@ import requests
 from bs4 import BeautifulSoup
 import xlwt
 
+#这个应该是直接提取到excel的
+
 def main():
     book = xlwt.Workbook()
     sheet1 = book.add_sheet('sheet1', cell_overwrite_ok=True)
-    heads = [u'排名', u'分数', u'评论人数', u'名称', u'上映时间', u'集数']
+    heads = [u'ID', u'排名', u'分数', u'评论人数', u'名称', u'发行日期', u'url']
     ii = 0
     i = 1
     for head in heads:
@@ -14,7 +16,7 @@ def main():
         ii += 1
 
     for page in range(1, 10):
-        url = 'http://bangumi.tv/anime/browser?sort=rank&page=%d' %page
+        url = 'http://bangumi.tv/game/browser?sort=rank&page=%d' %page
         res = requests.get(url)
         res.encoding = 'utf-8'    #告诉requests这个网站要用utf-8编码方式
         soup = BeautifulSoup(res.text, 'html.parser')  #明白指示它剖析器
@@ -25,25 +27,19 @@ def main():
             pnum = items.select('.tip_j')[0].text.rstrip('人评分)').lstrip('(')
 
             newurlpart = items.select('.l')[0]['href']  #取得href属性中的内容
-            newurl = 'http://bangumi.tv/%s' %newurlpart
+            newurl = 'http://bangumi.tv%s' %newurlpart
+            sub = items.select('.l')[0]['href'].strip('/subject/')
             newres = requests.get(newurl)
             newres.encoding = 'utf-8'
             newsoup = BeautifulSoup(newres.text, 'html.parser')
             for newitems in newsoup.select('.infobox'):
                 try:
-                    time = newitems.find(text="放送开始: ").parent.parent.text.lstrip('放送开始: ')
+                    time = newitems.find(text="发行日期: ").parent.parent.text.lstrip('发行日期: ')
                 except:
-                    try:
-                        time = newitems.find(text="上映年度: ").parent.parent.text.lstrip('上映年度: ')
-                    except:
-                        time = 'unknown'
-                try:
-                    set_number = newitems.find(text="话数: ").parent.parent.text.lstrip('话数: ')
-                except:
-                    set_number = 'unknown'
+                    time = 'unknown'
             #time = items.select('.info')[0].text
             #dt = datetime.strptime(time,'')
-            data_list = [rank, point, pnum, name, time, set_number]
+            data_list = [sub, rank, point, pnum, name, time, newurl]
             print(data_list)
             j = 0
             for data in data_list:
@@ -51,7 +47,7 @@ def main():
                 j += 1
             i += 1
 
-    book.save('动画排名2.0.xls')
+    book.save('游戏排名2.0.xls')
 
 if __name__ =='__main__':
     main()
