@@ -6,6 +6,8 @@ import pymysql
 #这个应该是最新在使用的
 
 rank = 0
+#这里设置需要爬取的页数
+bangumi_page = 20
 
 # 打开数据库连接
 db = pymysql.connect("localhost", "root", "lls0908329", "acgshelf", charset='utf8')
@@ -13,7 +15,7 @@ db = pymysql.connect("localhost", "root", "lls0908329", "acgshelf", charset='utf
 # 使用 cursor() 方法创建一个游标对象 cursor
 cursor = db.cursor()
 
-for page in range(1, 200):
+for page in range(1, bangumi_page):
     url = 'http://bangumi.tv/anime/browser?sort=rank&page=%d' %page
     res = requests.get(url)
     res.encoding = 'utf-8'    #告诉requests这个网站要用utf-8编码方式
@@ -86,29 +88,29 @@ for page in range(1, 200):
         data_list = [id, url, type, name, name_cn, eps_count, air_date, air_weekday, rating_score, rank, images_large,
                      collection_collect]  # 加summary
         print(data_list)
-
-        id = int(id)
-        eps_count = int(eps_count)
-        air_weekday = int(air_weekday)
-        rating_score = float(rating_score)
-        rank+1
-        collection_collect = int(collection_collect)
-
-        # SQL 插入语句
-        # if type == 2:
-        sql = "INSERT INTO anime(id, url, name, name_cn, summary, eps_count, air_date, air_weekday, rating_score, " \
-              "rank, images_large, images_common, images_medium, images_small, images_grid, collection_collect) VALUES " \
-              "('%d', '%s', '%s', '%s', '%s', '%d', '%s', '%d', '%f', '%d', '%s', '%s', '%s', '%s', '%s', '%d')" % \
-              (id, url, name, name_cn, summary, eps_count, air_date, air_weekday, rating_score, rank, images_large,
-               images_common, images_medium, images_small, images_grid, collection_collect)
-
-
-
-
-        # 执行sql语句
-        cursor.execute(sql)
-        # 提交到数据库执行
-        db.commit()
+        #
+        # id = int(id)
+        # eps_count = int(eps_count)
+        # air_weekday = int(air_weekday)
+        # rating_score = float(rating_score)
+        # rank+1
+        # collection_collect = int(collection_collect)
+        #
+        # # SQL 插入语句
+        # # if type == 2:
+        # sql = "INSERT INTO anime(id, url, name, name_cn, summary, eps_count, air_date, air_weekday, rating_score, " \
+        #       "rank, images_large, images_common, images_medium, images_small, images_grid, collection_collect) VALUES " \
+        #       "('%d', '%s', '%s', '%s', '%s', '%d', '%s', '%d', '%f', '%d', '%s', '%s', '%s', '%s', '%s', '%d')" % \
+        #       (id, url, name, name_cn, summary, eps_count, air_date, air_weekday, rating_score, rank, images_large,
+        #        images_common, images_medium, images_small, images_grid, collection_collect)
+        #
+        #
+        #
+        #
+        # # 执行sql语句
+        # cursor.execute(sql)
+        # # 提交到数据库执行
+        # db.commit()
 
 # 关闭数据库连接
 db.close()
